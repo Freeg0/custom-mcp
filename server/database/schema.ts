@@ -12,6 +12,8 @@ export const organizations = sqliteTable('organizations', {
   state: text('state'),
   zip: text('zip'),
   country: text('country'),
+  plan: text('plan', { enum: ['Basic', 'Pro', 'Enterprise'] }).default('Basic').notNull(),
+  accountCreditsCents: integer('account_credits_cents').default(0).notNull(),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
 })
@@ -67,6 +69,7 @@ export const opportunities = sqliteTable('opportunities', {
   updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
 })
 
+
 export const purchases = sqliteTable('purchases', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   customerId: integer('customer_id').references(() => customers.id, { onDelete: 'cascade' }).notNull(),
@@ -86,6 +89,5 @@ export type NewCustomer = typeof customers.$inferInsert
 export type Note = typeof notes.$inferSelect
 export type NewNote = typeof notes.$inferInsert
 export type Opportunity = typeof opportunities.$inferSelect
-export type NewOpportunity = typeof opportunities.$inferInsert
 export type Purchase = typeof purchases.$inferSelect
 export type NewPurchase = typeof purchases.$inferInsert
